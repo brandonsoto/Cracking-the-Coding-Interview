@@ -30,3 +30,4 @@
 
 # Jetbrains
 cmake-build-debug/
+.idea/
