@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <cstring>
 
 namespace ch1 {
 
@@ -57,6 +58,46 @@ namespace ch1 {
         return true;
     }
 
+    /*******************************************************************************************************************
+     * 3: URLify: Write a method to replace all spaces in a string with '%20'. Assume string has sufficient space at end
+     * to hold additional characters, and that you are given the true length of the string. Please use character array.
+     ******************************************************************************************************************/
+    void urlify( char* const str, const std::size_t size ) {
+        // solution 1: iterate through each char until space, replace char and move rest - NO
+        // solution 2: string stream - works if not in place
+        // solution 3: iterate backwards
+        // one space = 2 new characters
+
+        // TODO: not finished; need to change size
+
+        const char SPACE = ' ';
+        std::size_t str_ends = 0;
+        for ( std::size_t i = size - 1; i > 0; --i ) {
+            if ( str[i] != '\0' ) {
+                str_ends = i;
+                break;
+            }
+        }
+
+        str[size - 1] = '\0';
+
+        for ( std::size_t i = size - 2; i > 2 && str_ends > 0; ) {
+            const char current_char = str[str_ends];
+            if ( current_char == SPACE ) {
+                str[i] = '0';
+                str[i - 1] = '2';
+                str[i - 2] = '%';
+                i -= 3;
+            } else {
+                str[i] = str[str_ends];
+                --i;
+            }
+
+            --str_ends;
+        }
+    }
+
+
 } // end of ch1 namespace
 
 int main() {
@@ -79,6 +120,21 @@ int main() {
         const auto str2 = perm_test_cases2[i];
         std::cout << str1 << ", " << str2 << " are perms = " << std::boolalpha << ch1::is_permutation(str1, str2) << std::endl;
     }
+
+    std::cout << "-------------------------------------------------------" << std::endl;
+
+    // test cases for question 3
+    std::cout << "urlify" << std::endl << std::endl;
+
+    std::array<char, 14> test{"hello world"};
+    std::array<char, 18> test2{ "Mr John Smith"};
+
+    ch1::urlify( test.data(), test.size() );
+    std::cout << test.data() << std::endl;
+
+    ch1::urlify( test2.data(), test2.size() );
+    std::cout << test2.data() << std::endl;
+
 
     return 0;
 }
