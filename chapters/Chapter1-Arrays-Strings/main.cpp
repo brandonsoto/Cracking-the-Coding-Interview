@@ -63,7 +63,7 @@ namespace ch1 {
      * to hold additional characters, and that you are given the true length of the string. Please use character array.
      * // TODO: ask what is true size? Should it account for other replacement strings?
      ******************************************************************************************************************/
-    void urlify(char *const str, const std::size_t size) {
+    void urlify(char *const str ) {
         // solution 1: iterate through each char until space, replace char and move rest - NO
         // solution 2: string stream - works if not in place
         // solution 3: iterate backwards
@@ -71,6 +71,7 @@ namespace ch1 {
         constexpr char SEARCH_CHAR = ' '; // the char to be searched for and replaced
         const std::string REPLACEMENT_STRING = "%20"; // replaces search char
         const auto size_difference = REPLACEMENT_STRING.size() - 1;
+        const auto size = strlen( str ) + 1; // account for null char
 
         // get number of spaces
         std::size_t space_count = 0;
@@ -83,7 +84,7 @@ namespace ch1 {
 
         str[swap_index--] = '\0';
 
-        for ( std::size_t i = size - size_difference; i >= size_difference; --i ) {
+        for ( long i = size - size_difference; i >= 0; --i ) {
             if ( str[i] == SEARCH_CHAR ) {
                 for ( long k = size_difference; k >= 0; --k )
                     str[swap_index--] = REPLACEMENT_STRING[k];
@@ -126,18 +127,20 @@ namespace ch1 {
 
             std::array<char, 14> test{"hello world"};
             std::array<char, 18> test2{"Mr John Smith"};
-            std::array<char, 3> test3{ " " };
+            std::array<char, 4> test3{ " " };
+            std::array<char, 1> test4{ "" };
 
-            std::cout << strlen(test.data()) << std::endl;
-
-            ch1::urlify(test.data(), strlen(test.data()) + 1);
+            ch1::urlify(test.data());
             std::cout << test.data() << std::endl;
 
-            ch1::urlify(test2.data(), strlen(test2.data()) + 1);
+            ch1::urlify(test2.data());
             std::cout << test2.data() << std::endl;
             
-            ch1::urlify(test3.data(), strlen(test3.data()) + 1);
+            ch1::urlify(test3.data());
             std::cout << test3.data() << std::endl;
+
+            ch1::urlify(test4.data());
+            std::cout << test4.data() << std::endl;
         }
 
     } // end of tests namespace
