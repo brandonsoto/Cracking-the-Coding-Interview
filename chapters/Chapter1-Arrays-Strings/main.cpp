@@ -61,40 +61,37 @@ namespace ch1 {
     /*******************************************************************************************************************
      * 3: URLify: Write a method to replace all spaces in a string with '%20'. Assume string has sufficient space at end
      * to hold additional characters, and that you are given the true length of the string. Please use character array.
+     * // TODO: ask what is true size? Should it account for other replacement strings?
      ******************************************************************************************************************/
     void urlify(char *const str, const std::size_t size) {
         // solution 1: iterate through each char until space, replace char and move rest - NO
         // solution 2: string stream - works if not in place
         // solution 3: iterate backwards
-        // one space = 2 new characters
 
-        // TODO: not finished; need to change size
+        constexpr char SEARCH_CHAR = ' '; // the char to be searched for and replaced
+        const std::string REPLACEMENT_STRING = "%20"; // replaces search char
+        const auto size_difference = REPLACEMENT_STRING.size() - 1;
 
-        const char SPACE = ' ';
-        std::size_t str_ends = 0;
-        for (std::size_t i = size - 1; i > 0; --i) {
-            if (str[i] != '\0') {
-                str_ends = i;
-                break;
-            }
+        // get number of spaces
+        std::size_t space_count = 0;
+        for ( std::size_t i = 0; i < size; ++i ) {
+            if ( str[i] == SEARCH_CHAR )
+                ++space_count;
         }
 
-        str[size - 1] = '\0';
+        std::size_t swap_index = size + (space_count * size_difference) - 1;
 
-        for (std::size_t i = size - 2; i > 2 && str_ends > 0;) {
-            const char current_char = str[str_ends];
-            if (current_char == SPACE) {
-                str[i] = '0';
-                str[i - 1] = '2';
-                str[i - 2] = '%';
-                i -= 3;
+        str[swap_index--] = '\0';
+
+        for ( std::size_t i = size - size_difference; i >= size_difference; --i ) {
+            if ( str[i] == SEARCH_CHAR ) {
+                for ( long k = size_difference; k >= 0; --k )
+                    str[swap_index--] = REPLACEMENT_STRING[k];
             } else {
-                str[i] = str[str_ends];
-                --i;
+                str[swap_index--] = str[i];
             }
-
-            --str_ends;
         }
+
     }
 
     namespace tests {
@@ -129,12 +126,18 @@ namespace ch1 {
 
             std::array<char, 14> test{"hello world"};
             std::array<char, 18> test2{"Mr John Smith"};
+            std::array<char, 3> test3{ " " };
 
-            ch1::urlify(test.data(), test.size());
+            std::cout << strlen(test.data()) << std::endl;
+
+            ch1::urlify(test.data(), strlen(test.data()) + 1);
             std::cout << test.data() << std::endl;
 
-            ch1::urlify(test2.data(), test2.size());
+            ch1::urlify(test2.data(), strlen(test2.data()) + 1);
             std::cout << test2.data() << std::endl;
+            
+            ch1::urlify(test3.data(), strlen(test3.data()) + 1);
+            std::cout << test3.data() << std::endl;
         }
 
     } // end of tests namespace
