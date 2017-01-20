@@ -66,7 +66,7 @@ namespace ch1 {
     void urlify(char *const str ) {
         // solution 1: iterate through each char until space, replace char and move rest - NO
         // solution 2: string stream - works if not in place
-        // solution 3: iterate backwards
+        // * solution 3: iterate backwards O(n)
 
         constexpr char SEARCH_CHAR = ' '; // the char to be searched for and replaced
         const std::string REPLACEMENT_STRING = "%20"; // replaces search char
@@ -92,8 +92,25 @@ namespace ch1 {
                 str[swap_index--] = str[i];
             }
         }
-
     }
+
+    /*******************************************************************************************************************
+     * 4: Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
+     * A permutation does not need to be limited to just dictionary words.
+     ******************************************************************************************************************/
+    bool is_palindrome( const std::string& str ) {
+        // solution 1: iterate through half of string; compare chars on left and right O(n)
+        const auto size = str.size();
+        const std::size_t end_index = ( size % 2 == 0 ) ? ( size / 2 - 1) : (size / 2);
+
+        for ( std::size_t start = 0, end = str.size() - 1; start < end_index; ++start, --end ) {
+            if ( str[start] != str[end] )
+                return false;
+        }
+
+        return true;
+    }
+
 
     namespace tests {
         // test cases for question 1
@@ -143,6 +160,17 @@ namespace ch1 {
             std::cout << test4.data() << std::endl;
         }
 
+        // test cases for question 4
+        void question4_tests() {
+            std::cout << "-------------------------------------------------------" << std::endl;
+            std::cout << "permutation" << std::endl << std::endl;
+
+            std::cout << "'racecar' is palindrome = " << std::boolalpha << is_palindrome( "racecar" ) << std::endl;
+            std::cout << "'taco cat' is palindrome = " << std::boolalpha << is_palindrome( "taco cat" ) << std::endl;
+            std::cout << "'paul' is palindrome = " << std::boolalpha << is_palindrome( "paul" ) << std::endl;
+            std::cout << "'' is palindrome = " << std::boolalpha << is_palindrome( "" ) << std::endl;
+            std::cout << "' ' is palindrome = " << std::boolalpha << is_palindrome( " " ) << std::endl;
+        }
     } // end of tests namespace
 } // end of ch1 namespace
 
@@ -151,5 +179,6 @@ int main() {
     question1_tests();
     question2_tests();
     question3_tests();
+    question4_tests();
     return 0;
 }
