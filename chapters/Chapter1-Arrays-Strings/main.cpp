@@ -62,7 +62,7 @@ namespace ch1 {
      * 3: URLify: Write a method to replace all spaces in a string with '%20'. Assume string has sufficient space at end
      * to hold additional characters, and that you are given the true length of the string. Please use character array.
      ******************************************************************************************************************/
-    void urlify( char* const str, const std::size_t size ) {
+    void urlify(char *const str, const std::size_t size) {
         // solution 1: iterate through each char until space, replace char and move rest - NO
         // solution 2: string stream - works if not in place
         // solution 3: iterate backwards
@@ -72,8 +72,8 @@ namespace ch1 {
 
         const char SPACE = ' ';
         std::size_t str_ends = 0;
-        for ( std::size_t i = size - 1; i > 0; --i ) {
-            if ( str[i] != '\0' ) {
+        for (std::size_t i = size - 1; i > 0; --i) {
+            if (str[i] != '\0') {
                 str_ends = i;
                 break;
             }
@@ -81,9 +81,9 @@ namespace ch1 {
 
         str[size - 1] = '\0';
 
-        for ( std::size_t i = size - 2; i > 2 && str_ends > 0; ) {
+        for (std::size_t i = size - 2; i > 2 && str_ends > 0;) {
             const char current_char = str[str_ends];
-            if ( current_char == SPACE ) {
+            if (current_char == SPACE) {
                 str[i] = '0';
                 str[i - 1] = '2';
                 str[i - 2] = '%';
@@ -97,48 +97,51 @@ namespace ch1 {
         }
     }
 
-    // test cases for question 1
-    void question1_tests() {
-        std::cout << "is unique" << std::endl << std::endl;
-        std::vector<std::string> unique_test_cases{"", "s", "sa", "sass"};
-        for (const auto &test : unique_test_cases) {
-            std::cout << test << " is unique = " << std::boolalpha << ch1::is_unique(test) << std::endl;
+    namespace tests {
+        // test cases for question 1
+        void question1_tests() {
+            std::cout << "is unique" << std::endl << std::endl;
+            std::vector<std::string> unique_test_cases{"", "s", "sa", "sass"};
+            for (const auto &test : unique_test_cases) {
+                std::cout << test << " is unique = " << std::boolalpha << ch1::is_unique(test) << std::endl;
+            }
         }
-    }
 
-    // test cases for question 2
-    void question2_tests() {
-        std::cout << "-------------------------------------------------------" << std::endl;
-        std::cout << "is permutation" << std::endl << std::endl;
+        // test cases for question 2
+        void question2_tests() {
+            std::cout << "-------------------------------------------------------" << std::endl;
+            std::cout << "is permutation" << std::endl << std::endl;
 
-        std::vector<std::string> perm_test_cases1{"", "s", "sa", "sassy", "alym", "a ", " h", "hello"};
-        std::vector<std::string> perm_test_cases2{"", "s", "as", "yssas", "myla", " a", "j ", "hello "};
-        for (std::size_t i = 0; i < perm_test_cases1.size(); ++i) {
-            const auto str1 = perm_test_cases1[i];
-            const auto str2 = perm_test_cases2[i];
-            std::cout << str1 << ", " << str2 << " are perms = " << std::boolalpha << ch1::is_permutation(str1, str2) << std::endl;
+            std::vector<std::string> perm_test_cases1{"", "s", "sa", "sassy", "alym", "a ", " h", "hello"};
+            std::vector<std::string> perm_test_cases2{"", "s", "as", "yssas", "myla", " a", "j ", "hello "};
+            for (std::size_t i = 0; i < perm_test_cases1.size(); ++i) {
+                const auto str1 = perm_test_cases1[i];
+                const auto str2 = perm_test_cases2[i];
+                std::cout << str1 << ", " << str2 << " are perms = " << std::boolalpha
+                          << ch1::is_permutation(str1, str2) << std::endl;
+            }
         }
-    }
 
-    // test cases for question 3
-    void question3_tests() {
-        std::cout << "-------------------------------------------------------" << std::endl;
-        std::cout << "urlify" << std::endl << std::endl;
+        // test cases for question 3
+        void question3_tests() {
+            std::cout << "-------------------------------------------------------" << std::endl;
+            std::cout << "urlify" << std::endl << std::endl;
 
-        std::array<char, 14> test{"hello world"};
-        std::array<char, 18> test2{ "Mr John Smith"};
+            std::array<char, 14> test{"hello world"};
+            std::array<char, 18> test2{"Mr John Smith"};
 
-        ch1::urlify( test.data(), test.size() );
-        std::cout << test.data() << std::endl;
+            ch1::urlify(test.data(), test.size());
+            std::cout << test.data() << std::endl;
 
-        ch1::urlify( test2.data(), test2.size() );
-        std::cout << test2.data() << std::endl;
-    }
+            ch1::urlify(test2.data(), test2.size());
+            std::cout << test2.data() << std::endl;
+        }
 
+    } // end of tests namespace
 } // end of ch1 namespace
 
 int main() {
-    using namespace ch1;
+    using namespace ch1::tests;
     question1_tests();
     question2_tests();
     question3_tests();
