@@ -94,10 +94,6 @@ namespace ch1 {
         }
     }
 
-    /*******************************************************************************************************************
-     * 4: Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
-     * A permutation does not need to be limited to just dictionary words.
-     ******************************************************************************************************************/
     bool is_palindrome( const std::string& str ) {
         // solution 1: iterate through half of string; compare chars on left and right O(n)
         const auto size = str.size();
@@ -109,6 +105,32 @@ namespace ch1 {
         }
 
         return true;
+    }
+
+    // is a character from a - z
+    bool is_alpha( const char character ) {
+        const char lowercase_char = std::tolower( character, std::locale{} );
+        return lowercase_char >= 'a' && lowercase_char <= 'z';
+    }
+
+    /*******************************************************************************************************************
+     * 4: Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
+     * A permutation does not need to be limited to just dictionary words.
+     * TODO: Are we dealing with ascii? How do non-letters affect 'palindromeness'? How does case affect it?
+     ******************************************************************************************************************/
+    bool is_palindrome_permutation( const std::string& str ) {
+        std::unordered_map<char, std::size_t> char_map{};
+        for ( const auto& character : str ) {
+            if ( is_alpha( character ) )
+                ++char_map[character];
+        }
+
+        // number of chars that can have an odd count
+        const long odd_count = std::count_if( char_map.begin(), char_map.end(), []( const auto& pair ){
+            return pair.second % 2 == 1; // count if odd
+        });
+
+        return odd_count <= 1;
     }
 
 
@@ -165,11 +187,12 @@ namespace ch1 {
             std::cout << "-------------------------------------------------------" << std::endl;
             std::cout << "permutation" << std::endl << std::endl;
 
-            std::cout << "'racecar' is palindrome = " << std::boolalpha << is_palindrome( "racecar" ) << std::endl;
-            std::cout << "'taco cat' is palindrome = " << std::boolalpha << is_palindrome( "taco cat" ) << std::endl;
-            std::cout << "'paul' is palindrome = " << std::boolalpha << is_palindrome( "paul" ) << std::endl;
-            std::cout << "'' is palindrome = " << std::boolalpha << is_palindrome( "" ) << std::endl;
-            std::cout << "' ' is palindrome = " << std::boolalpha << is_palindrome( " " ) << std::endl;
+            std::cout << "'racecar' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "racecar" ) << std::endl;
+            std::cout << "'rraacce' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "rraacce" ) << std::endl;
+            std::cout << "'taco cat' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "taco cat" ) << std::endl;
+            std::cout << "'paul' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "paul" ) << std::endl;
+            std::cout << "'' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "" ) << std::endl;
+            std::cout << "' ' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( " " ) << std::endl;
         }
     } // end of tests namespace
 } // end of ch1 namespace
