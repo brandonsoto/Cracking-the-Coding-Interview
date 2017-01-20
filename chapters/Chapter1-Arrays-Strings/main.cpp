@@ -107,12 +107,6 @@ namespace ch1 {
         return true;
     }
 
-    // is a character from a - z
-    bool is_alpha( const char character ) {
-        const char lowercase_char = std::tolower( character, std::locale{} );
-        return lowercase_char >= 'a' && lowercase_char <= 'z';
-    }
-
     /*******************************************************************************************************************
      * 4: Palindrome Permutation: Given a string, write a function to check if it is a permutation of a palindrome.
      * A permutation does not need to be limited to just dictionary words.
@@ -121,7 +115,7 @@ namespace ch1 {
     bool is_palindrome_permutation( const std::string& str ) {
         std::unordered_map<char, std::size_t> char_map{};
         for ( const auto& character : str ) {
-            if ( is_alpha( character ) )
+            if ( isalpha( static_cast<int>(character) ) )
                 ++char_map[character];
         }
 
@@ -131,6 +125,33 @@ namespace ch1 {
         });
 
         return odd_count <= 1;
+    }
+
+    /*******************************************************************************************************************
+     * 5: One Away: There are three types of edits that can be performed on strings; insert a character, remove a
+     * character, or replace a character. Given two strings, write a function to check if they are one edit
+     * (or zero edits away)
+     ******************************************************************************************************************/
+    bool is_one_away( const std::string& str, const std::string& modified_str ) {
+        // solution: check type of modification (if any) brute force approach
+        const auto str_size = str.size();
+        const auto modified_size = modified_str.size();
+
+        if ( str == modified_str )
+            return true;
+
+        if ( str_size < modified_size + 1 || str_size > modified_size + 1 )
+            return false;
+
+        if ( modified_size == str_size ) { // same size
+           // check replacement
+        } else if ( modified_size > str_size) { // modified is bigger
+            // check insertion
+        } else { // modified is smaller
+            // check deletion
+        }
+
+        return true;
     }
 
 
@@ -186,7 +207,6 @@ namespace ch1 {
         void question4_tests() {
             std::cout << "-------------------------------------------------------" << std::endl;
             std::cout << "permutation" << std::endl << std::endl;
-
             std::cout << "'racecar' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "racecar" ) << std::endl;
             std::cout << "'rraacce' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "rraacce" ) << std::endl;
             std::cout << "'taco cat' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "taco cat" ) << std::endl;
@@ -194,6 +214,20 @@ namespace ch1 {
             std::cout << "'' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( "" ) << std::endl;
             std::cout << "' ' is palindrome perm = " << std::boolalpha << is_palindrome_permutation( " " ) << std::endl;
         }
+
+        // test cases for question 5
+        void question5_tests() {
+            std::cout << "-------------------------------------------------------" << std::endl;
+            std::cout << "permutation" << std::endl << std::endl;
+            std::cout << "'', '' = " << std::boolalpha << is_one_away( "", "" ) << std::endl;
+            std::cout << "' ', ' ' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+            std::cout << "'pale', 'ple' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+            std::cout << "'pales', 'pales' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+            std::cout << "'pale', 'bale' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+            std::cout << "'pale', 'bake' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+        }
+
+
     } // end of tests namespace
 } // end of ch1 namespace
 
@@ -203,5 +237,6 @@ int main() {
     question2_tests();
     question3_tests();
     question4_tests();
+    question5_tests();
     return 0;
 }
