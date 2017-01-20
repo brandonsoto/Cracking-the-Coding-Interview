@@ -218,7 +218,7 @@ namespace ch1 {
         // test cases for question 5
         void question5_tests() {
             std::cout << "-------------------------------------------------------" << std::endl;
-            std::cout << "permutation" << std::endl << std::endl;
+            std::cout << "is one or zero away" << std::endl << std::endl;
             std::cout << "'', '' = " << std::boolalpha << is_one_away( "", "" ) << std::endl;
             std::cout << "' ', ' ' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
             std::cout << "'pale', 'ple' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
