@@ -97,44 +97,50 @@ namespace ch1 {
         }
     }
 
+    // test cases for question 1
+    void question1_tests() {
+        std::cout << "is unique" << std::endl << std::endl;
+        std::vector<std::string> unique_test_cases{"", "s", "sa", "sass"};
+        for (const auto &test : unique_test_cases) {
+            std::cout << test << " is unique = " << std::boolalpha << ch1::is_unique(test) << std::endl;
+        }
+    }
+
+    // test cases for question 2
+    void question2_tests() {
+        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "is permutation" << std::endl << std::endl;
+
+        std::vector<std::string> perm_test_cases1{"", "s", "sa", "sassy", "alym", "a ", " h", "hello"};
+        std::vector<std::string> perm_test_cases2{"", "s", "as", "yssas", "myla", " a", "j ", "hello "};
+        for (std::size_t i = 0; i < perm_test_cases1.size(); ++i) {
+            const auto str1 = perm_test_cases1[i];
+            const auto str2 = perm_test_cases2[i];
+            std::cout << str1 << ", " << str2 << " are perms = " << std::boolalpha << ch1::is_permutation(str1, str2) << std::endl;
+        }
+    }
+
+    // test cases for question 3
+    void question3_tests() {
+        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "urlify" << std::endl << std::endl;
+
+        std::array<char, 14> test{"hello world"};
+        std::array<char, 18> test2{ "Mr John Smith"};
+
+        ch1::urlify( test.data(), test.size() );
+        std::cout << test.data() << std::endl;
+
+        ch1::urlify( test2.data(), test2.size() );
+        std::cout << test2.data() << std::endl;
+    }
 
 } // end of ch1 namespace
 
 int main() {
-    // test cases for question 1
-    std::cout << "is unique" << std::endl << std::endl;
-    std::vector<std::string> unique_test_cases{"", "s", "sa", "sass"};
-    for (const auto &test : unique_test_cases) {
-        std::cout << test << " is unique = " << std::boolalpha << ch1::is_unique(test) << std::endl;
-    }
-
-    std::cout << "-------------------------------------------------------" << std::endl;
-
-    // test cases for question 2
-    std::cout << "is permutation" << std::endl << std::endl;
-
-    std::vector<std::string> perm_test_cases1{"", "s", "sa", "sassy", "alym", "a ", " h", "hello"};
-    std::vector<std::string> perm_test_cases2{"", "s", "as", "yssas", "myla", " a", "j ", "hello "};
-    for (std::size_t i = 0; i < perm_test_cases1.size(); ++i) {
-        const auto str1 = perm_test_cases1[i];
-        const auto str2 = perm_test_cases2[i];
-        std::cout << str1 << ", " << str2 << " are perms = " << std::boolalpha << ch1::is_permutation(str1, str2) << std::endl;
-    }
-
-    std::cout << "-------------------------------------------------------" << std::endl;
-
-    // test cases for question 3
-    std::cout << "urlify" << std::endl << std::endl;
-
-    std::array<char, 14> test{"hello world"};
-    std::array<char, 18> test2{ "Mr John Smith"};
-
-    ch1::urlify( test.data(), test.size() );
-    std::cout << test.data() << std::endl;
-
-    ch1::urlify( test2.data(), test2.size() );
-    std::cout << test2.data() << std::endl;
-
-
+    using namespace ch1;
+    question1_tests();
+    question2_tests();
+    question3_tests();
     return 0;
 }
