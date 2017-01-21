@@ -192,4 +192,43 @@ namespace ch1 {
         return ( str.size() > result.size() ) ? result : str;
     }
 
+    using matrix = std::vector<std::vector<int>>;
+
+    void swap( int *const pos1, int *const pos2 ) {
+        const int temp = *pos1;
+        *pos1 = *pos2;
+        *pos2 = temp;
+    }
+
+    /**
+     * 7: Rotate Matrix: Given an image of NxN matrix where each pixel is image of 4 bytes, write method to rotate image
+     * by 90 degrees. Can you do this in place?
+     */
+    void rotate_matrix( matrix& the_matrix ) {
+        if ( the_matrix.empty() || the_matrix.size() != the_matrix[0].size() )
+            return;
+
+        const auto n = the_matrix.size();
+
+        for ( std::size_t row = 0; row < ( n / 2 ); ++row ) {
+            const auto columns = n - 1 - row;
+            int* buffer = &the_matrix[row][row];
+
+            // swap corners
+            swap( buffer, &the_matrix[row][columns] );     // swap top right
+            swap( buffer, &the_matrix[columns][columns] ); // swap bottom right
+            swap( buffer, &the_matrix[columns][row] );     // swap bottom left
+
+            // swap remaining columns
+            for ( std::size_t column = row + 1; column < columns; ++column ) {
+                buffer = &the_matrix[row][column];
+                swap( buffer, &the_matrix[column][columns] );           // swap buf -> right
+                swap( buffer, &the_matrix[columns][columns - column] ); // swap buf -> bottom
+                swap( buffer, &the_matrix[n - column - 1][row] );       // swap buf -> left
+            }
+        }
+
+
+    }
+
 } // end of ch1 namespace
