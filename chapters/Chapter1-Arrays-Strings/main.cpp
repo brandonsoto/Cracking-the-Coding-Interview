@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <cstring>
+#include <sstream>
 
 namespace ch1 {
 
@@ -161,6 +162,36 @@ namespace ch1 {
         return true;
     }
 
+    /*******************************************************************************************************************
+     * 6: String Compression: Implement a method to perform basic string compression that counts repeated characters.
+     * You can assume the string has only uppercase and lowercase letters (a-z).
+     * TODO: an optimization would be to check the compressed size in advance.
+     ******************************************************************************************************************/
+    std::string compress( const std::string& str ) {
+        if ( str.empty() )
+            return str;
+
+        char curr_char = str[0];
+        std::size_t count = 1;
+        std::ostringstream ss;
+
+        for ( std::size_t i = 1; i < str.size(); ++i ) {
+            if ( str[i] == curr_char ) {
+                ++count;
+            } else {
+                ss << curr_char << count;
+                curr_char = str[i];
+                count = 1;
+            }
+        }
+
+        ss << curr_char << count;
+
+        const auto result = ss.str();
+
+        return ( str.size() > result.size() ) ? result : str;
+    }
+
 
     namespace tests {
         // test cases for question 1
@@ -235,6 +266,14 @@ namespace ch1 {
             std::cout << "'pale', 'ohnohh' = " << std::boolalpha << is_one_away( "pale", "ohnohh" ) << std::endl;
         }
 
+        void question6_tests() {
+            std::cout << "-------------------------------------------------------" << std::endl;
+            std::cout << "string compression" << std::endl << std::endl;
+            std::cout << "aabcccccaaa compressed = " << compress( "aabcccccaaa" ) << std::endl;
+            std::cout << "aabccccca compressed = " << compress( "aabccccca" ) << std::endl;
+            std::cout << "abcd compressed = " << compress( "abcd" ) << std::endl;
+        }
+
 
     } // end of tests namespace
 } // end of ch1 namespace
@@ -246,5 +285,6 @@ int main() {
     question3_tests();
     question4_tests();
     question5_tests();
+    question6_tests();
     return 0;
 }
