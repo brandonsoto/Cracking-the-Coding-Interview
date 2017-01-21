@@ -127,28 +127,35 @@ namespace ch1 {
         return odd_count <= 1;
     }
 
+    bool is_equal( const std::string& short_str, const std::string& long_str,
+                   const std::size_t short_start_index, const std::size_t long_start_index) {
+        for ( std::size_t k = short_start_index, j = long_start_index; k < short_str.size(); ++k, ++j ) {
+            if ( short_str[k] != long_str[j] )
+                return false;
+        }
+
+        return true;
+    }
+
     /*******************************************************************************************************************
      * 5: One Away: There are three types of edits that can be performed on strings; insert a character, remove a
      * character, or replace a character. Given two strings, write a function to check if they are one edit
      * (or zero edits away)
      ******************************************************************************************************************/
     bool is_one_away( const std::string& str, const std::string& modified_str ) {
-        // solution: check type of modification (if any) brute force approach
-        const auto str_size = str.size();
-        const auto modified_size = modified_str.size();
+        const std::string& short_string = ( str.size() <= modified_str.size() ) ? str : modified_str;
+        const std::string& long_string = ( str.size() > modified_str.size() ) ? str : modified_str;
 
-        if ( str == modified_str )
-            return true;
-
-        if ( str_size < modified_size + 1 || str_size > modified_size + 1 )
+        if ( long_string.size() - short_string.size() > 1 )
             return false;
 
-        if ( modified_size == str_size ) { // same size
-           // check replacement
-        } else if ( modified_size > str_size) { // modified is bigger
-            // check insertion
-        } else { // modified is smaller
-            // check deletion
+        for ( std::size_t i = 0, j = 0; i < short_string.size(); ++i, ++j ) {
+            if (str[i] != modified_str[i]) {
+                if (long_string.size() == short_string.size()) // replacement or equals
+                    return is_equal( short_string, long_string, i + 1, i + 1);
+                else // insertion or deletion
+                    return is_equal( short_string, long_string, i, i + 1);
+            }
         }
 
         return true;
@@ -221,10 +228,11 @@ namespace ch1 {
             std::cout << "is one or zero away" << std::endl << std::endl;
             std::cout << "'', '' = " << std::boolalpha << is_one_away( "", "" ) << std::endl;
             std::cout << "' ', ' ' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
-            std::cout << "'pale', 'ple' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
-            std::cout << "'pales', 'pales' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
-            std::cout << "'pale', 'bale' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
-            std::cout << "'pale', 'bake' = " << std::boolalpha << is_one_away( " ", " " ) << std::endl;
+            std::cout << "'pale', 'ple' = " << std::boolalpha << is_one_away( "pale", "ple" ) << std::endl;
+            std::cout << "'pales', 'pales' = " << std::boolalpha << is_one_away( "pales", "pales" ) << std::endl;
+            std::cout << "'pale', 'bale' = " << std::boolalpha << is_one_away( "pale", "bale" ) << std::endl;
+            std::cout << "'pale', 'bake' = " << std::boolalpha << is_one_away( "pale", "bake" ) << std::endl;
+            std::cout << "'pale', 'ohnohh' = " << std::boolalpha << is_one_away( "pale", "ohnohh" ) << std::endl;
         }
 
 
