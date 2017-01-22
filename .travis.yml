@@ -16,8 +16,8 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -q -y cmake-data cmake
     # install 4.8 compiler
-  - sudo apt-get install -q -y g++-4.8
-  - export CXX="g++-4.8";
+  - sudo apt-get install -q -y g++-5.4
+  - export CXX="g++-5.4";
 
 script:
   - cmake --version
@@ -25,3 +25,4 @@ script:
   - cd build;
   - cmake ../;
   - make -j7
+  - make test
