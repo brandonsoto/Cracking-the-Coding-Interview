@@ -206,16 +206,8 @@ namespace ch1 {
 
         for (std::size_t row = 0; row < (n / 2); ++row) {
             const std::size_t last_column = n - row - 1;
-            int *buffer = &the_matrix[row][row];
-
-            // swap corners
-            std::swap(*buffer, the_matrix[row][last_column]);
-            std::swap(*buffer, the_matrix[last_column][last_column]);
-            std::swap(*buffer, the_matrix[last_column][row]);
-
-            // swap top row with other sides
-            for (std::size_t column = row + 1; column < last_column; ++column) {
-                buffer = &the_matrix[row][column];
+            for (std::size_t column = row; column < last_column; ++column) {
+                int* buffer = &the_matrix[row][column];
                 std::swap(*buffer, the_matrix[column][last_column]);                     // swap with right column
                 std::swap(*buffer, the_matrix[last_column][last_column + row - column]); // swap with bottom row
                 std::swap(*buffer, the_matrix[last_column + row - column][row]);         // swap with left column
