@@ -1,0 +1,28 @@
+language: cpp
+
+sudo: required
+dist: trusty
+os: linux
+
+notifications:
+  email: false
+
+compiler: g++
+
+env: BUILD_TYPE=cmake
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get -qq update
+  - sudo apt-get install -q -y cmake-data cmake
+    # install 4.8 compiler
+  - sudo apt-get install -q -y g++-5
+  - export CXX="g++-5";
+
+script:
+  - cmake --version
+  - mkdir build;
+  - cd build;
+  - cmake ../;
+  - make -j7
+  - make test
