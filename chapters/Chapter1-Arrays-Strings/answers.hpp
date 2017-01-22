@@ -228,7 +228,7 @@ namespace ch1 {
         std::vector<std::size_t> marked_rows{};
         std::vector<std::size_t> marked_columns{};
 
-        // mark 0'd columns and rows
+        // mark rows and columns to be zeroed
         for (std::size_t row = 0; row < total_rows; ++row) {
             for (std::size_t column = 0; column < total_columns; ++column) {
                 if (matrix[row][column] == 0) {
@@ -238,11 +238,13 @@ namespace ch1 {
             }
         }
 
+        // zero out rows
         for ( const auto& row : marked_rows ) {
             for ( std::size_t i = 0; i < total_rows; ++i )
                 matrix[row][i] = 0;
         }
 
+        // zero out columns
         for ( const auto& column : marked_columns ) {
             for ( std::size_t i = 0; i < total_columns; ++i )
                 matrix[i][column] = 0;
