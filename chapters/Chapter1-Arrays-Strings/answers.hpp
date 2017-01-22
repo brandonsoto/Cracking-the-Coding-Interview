@@ -64,7 +64,7 @@ namespace ch1 {
      * to hold additional characters, and that you are given the true length of the string. Please use character array.
      * // TODO: ask what is true size? Should it account for other replacement strings?
      ******************************************************************************************************************/
-    void urlify(char *const str ) {
+    void urlify(char *const str) {
         // solution 1: iterate through each char until space, replace char and move rest - NO
         // solution 2: string stream - works if not in place
         // * solution 3: iterate backwards O(n)
@@ -72,12 +72,12 @@ namespace ch1 {
         constexpr char SEARCH_CHAR = ' '; // the char to be searched for and replaced
         const std::string REPLACEMENT_STRING = "%20"; // replaces search char
         const auto size_difference = REPLACEMENT_STRING.size() - 1;
-        const auto size = strlen( str ) + 1; // account for null char
+        const auto size = strlen(str) + 1; // account for null char
 
         // get number of spaces
         std::size_t space_count = 0;
-        for ( std::size_t i = 0; i < size; ++i ) {
-            if ( str[i] == SEARCH_CHAR )
+        for (std::size_t i = 0; i < size; ++i) {
+            if (str[i] == SEARCH_CHAR)
                 ++space_count;
         }
 
@@ -85,9 +85,9 @@ namespace ch1 {
 
         str[swap_index--] = '\0';
 
-        for ( long i = size - size_difference; i >= 0; --i ) {
-            if ( str[i] == SEARCH_CHAR ) {
-                for ( long k = size_difference; k >= 0; --k )
+        for (long i = size - size_difference; i >= 0; --i) {
+            if (str[i] == SEARCH_CHAR) {
+                for (long k = size_difference; k >= 0; --k)
                     str[swap_index--] = REPLACEMENT_STRING[k];
             } else {
                 str[swap_index--] = str[i];
@@ -95,13 +95,13 @@ namespace ch1 {
         }
     }
 
-    bool is_palindrome( const std::string& str ) {
+    bool is_palindrome(const std::string &str) {
         // solution 1: iterate through half of string; compare chars on left and right O(n)
         const auto size = str.size();
-        const std::size_t end_index = ( size % 2 == 0 ) ? ( size / 2 - 1) : (size / 2);
+        const std::size_t end_index = (size % 2 == 0) ? (size / 2 - 1) : (size / 2);
 
-        for ( std::size_t start = 0, end = str.size() - 1; start < end_index; ++start, --end ) {
-            if ( str[start] != str[end] )
+        for (std::size_t start = 0, end = str.size() - 1; start < end_index; ++start, --end) {
+            if (str[start] != str[end])
                 return false;
         }
 
@@ -113,25 +113,25 @@ namespace ch1 {
      * A permutation does not need to be limited to just dictionary words.
      * TODO: Are we dealing with ascii? How do non-letters affect 'palindromeness'? How does case affect it?
      ******************************************************************************************************************/
-    bool is_palindrome_permutation( const std::string& str ) {
+    bool is_palindrome_permutation(const std::string &str) {
         std::unordered_map<char, std::size_t> char_map{};
-        for ( const auto& character : str ) {
-            if ( isalpha( static_cast<int>(character) ) )
+        for (const auto &character : str) {
+            if (isalpha(static_cast<int>(character)))
                 ++char_map[character];
         }
 
         // number of chars that can have an odd count
-        const long odd_count = std::count_if( char_map.begin(), char_map.end(), []( const auto& pair ){
+        const long odd_count = std::count_if(char_map.begin(), char_map.end(), [](const auto &pair) {
             return pair.second % 2 == 1; // count if odd
         });
 
         return odd_count <= 1;
     }
 
-    bool is_equal( const std::string& short_str, const std::string& long_str,
-                   const std::size_t short_start_index, const std::size_t long_start_index) {
-        for ( std::size_t k = short_start_index, j = long_start_index; k < short_str.size(); ++k, ++j ) {
-            if ( short_str[k] != long_str[j] )
+    bool is_equal(const std::string &short_str, const std::string &long_str,
+                  const std::size_t short_start_index, const std::size_t long_start_index) {
+        for (std::size_t k = short_start_index, j = long_start_index; k < short_str.size(); ++k, ++j) {
+            if (short_str[k] != long_str[j])
                 return false;
         }
 
@@ -143,19 +143,19 @@ namespace ch1 {
      * character, or replace a character. Given two strings, write a function to check if they are one edit
      * (or zero edits away)
      ******************************************************************************************************************/
-    bool is_one_away( const std::string& str, const std::string& modified_str ) {
-        const std::string& short_string = ( str.size() <= modified_str.size() ) ? str : modified_str;
-        const std::string& long_string = ( str.size() > modified_str.size() ) ? str : modified_str;
+    bool is_one_away(const std::string &str, const std::string &modified_str) {
+        const std::string &short_string = (str.size() <= modified_str.size()) ? str : modified_str;
+        const std::string &long_string = (str.size() > modified_str.size()) ? str : modified_str;
 
-        if ( long_string.size() - short_string.size() > 1 )
+        if (long_string.size() - short_string.size() > 1)
             return false;
 
-        for ( std::size_t i = 0, j = 0; i < short_string.size(); ++i, ++j ) {
+        for (std::size_t i = 0, j = 0; i < short_string.size(); ++i, ++j) {
             if (str[i] != modified_str[i]) {
                 if (long_string.size() == short_string.size()) // replacement or equals
-                    return is_equal( short_string, long_string, i + 1, i + 1);
+                    return is_equal(short_string, long_string, i + 1, i + 1);
                 else // insertion or deletion
-                    return is_equal( short_string, long_string, i, i + 1);
+                    return is_equal(short_string, long_string, i, i + 1);
             }
         }
 
@@ -167,16 +167,16 @@ namespace ch1 {
      * You can assume the string has only uppercase and lowercase letters (a-z).
      * TODO: an optimization would be to check the compressed size in advance.
      ******************************************************************************************************************/
-    std::string compress( const std::string& str ) {
-        if ( str.empty() )
+    std::string compress(const std::string &str) {
+        if (str.empty())
             return str;
 
         char curr_char = str[0];
         std::size_t count = 1;
         std::ostringstream ss;
 
-        for ( std::size_t i = 1; i < str.size(); ++i ) {
-            if ( str[i] == curr_char ) {
+        for (std::size_t i = 1; i < str.size(); ++i) {
+            if (str[i] == curr_char) {
                 ++count;
             } else {
                 ss << curr_char << count;
@@ -189,46 +189,38 @@ namespace ch1 {
 
         const auto result = ss.str();
 
-        return ( str.size() > result.size() ) ? result : str;
+        return (str.size() > result.size()) ? result : str;
     }
 
     using matrix = std::vector<std::vector<int>>;
-
-    void swap( int *const pos1, int *const pos2 ) {
-        const int temp = *pos1;
-        *pos1 = *pos2;
-        *pos2 = temp;
-    }
 
     /**
      * 7: Rotate Matrix: Given an image of NxN matrix where each pixel is image of 4 bytes, write method to rotate image
      * by 90 degrees. Can you do this in place?
      */
-    void rotate_matrix( matrix& the_matrix ) {
-        if ( the_matrix.empty() || the_matrix.size() != the_matrix[0].size() )
+    void rotate_matrix(matrix &the_matrix) {
+        if (the_matrix.empty() || the_matrix.size() != the_matrix[0].size())
             return;
 
         const auto n = the_matrix.size();
 
-        for ( std::size_t row = 0; row < ( n / 2 ); ++row ) {
-            const auto columns = n - 1 - row;
-            int* buffer = &the_matrix[row][row];
+        for (std::size_t row = 0; row < (n / 2); ++row) {
+            const std::size_t last_column = n - row - 1;
+            int *buffer = &the_matrix[row][row];
 
             // swap corners
-            swap( buffer, &the_matrix[row][columns] );     // swap top right
-            swap( buffer, &the_matrix[columns][columns] ); // swap bottom right
-            swap( buffer, &the_matrix[columns][row] );     // swap bottom left
+            std::swap(*buffer, the_matrix[row][last_column]);
+            std::swap(*buffer, the_matrix[last_column][last_column]);
+            std::swap(*buffer, the_matrix[last_column][row]);
 
-            // swap remaining columns
-            for ( std::size_t column = row + 1; column < columns; ++column ) {
+            // swap top row with other sides
+            for (std::size_t column = row + 1; column < last_column; ++column) {
                 buffer = &the_matrix[row][column];
-                swap( buffer, &the_matrix[column][columns] );           // swap buf -> right
-                swap( buffer, &the_matrix[columns][columns - column] ); // swap buf -> bottom
-                swap( buffer, &the_matrix[n - column - 1][row] );       // swap buf -> left
+                std::swap(*buffer, the_matrix[column][last_column]);                     // swap with right column
+                std::swap(*buffer, the_matrix[last_column][last_column + row - column]); // swap with bottom row
+                std::swap(*buffer, the_matrix[last_column + row - column][row]);         // swap with left column
             }
         }
-
-
     }
 
 } // end of ch1 namespace
