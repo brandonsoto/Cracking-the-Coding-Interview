@@ -21,7 +21,6 @@ before_install:
 
 script:
   - cmake --version
-  - cd ${CURR_DIR}
   - mkdir build;
   - cd build;
   - cmake ../;
