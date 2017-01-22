@@ -6,8 +6,5 @@ enable_testing()
 find_package( GTest REQUIRED )
 add_executable( chapter1 tests.cpp answers.hpp )
 target_link_libraries( chapter1 PUBLIC GTest::GTest )
-add_test(
-        NAME chapter1_test
-        COMMAND chapter1 --gtest-color=yes
-)
+add_test( NAME chapter1_test COMMAND chapter1 )
 
