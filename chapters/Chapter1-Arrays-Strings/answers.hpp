@@ -249,4 +249,15 @@ namespace ch1 {
         }
     }
 
+    /**
+     * 9: String Rotation: Assume you have a method isSubstring which checks if one word is a substring
+     * of another. Given two strings, s1 and s2, write code to check if s1 is a rotation of s1 using only
+     * one call to isSubstring.
+     */
+    bool is_rotation( const std::string& str1, const std::string& str2 ) {
+        if ( str1.size() != str2.size() ) { return false; }
+        const std::string copy = str2 + str2;
+        return std::search(copy.begin(), copy.end(), str1.begin(), str1.end()) != copy.end();
+    }
+
 } // end of ch1 namespace

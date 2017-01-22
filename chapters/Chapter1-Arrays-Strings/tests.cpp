@@ -170,8 +170,17 @@ TEST( Chapter1, Question8 ) {
 
     zero_matrix( matrix_4x5 );
     ASSERT_EQ( expected, matrix_4x5 );
-
 }
+
+TEST( Chapter1, Question9 ) {
+    ASSERT_FALSE( is_rotation("", "") );
+    ASSERT_FALSE( is_rotation(" ", "  ") );
+    ASSERT_FALSE( is_rotation("racecar", "racerace") );
+    ASSERT_TRUE( is_rotation(" ", " ") );
+    ASSERT_TRUE( is_rotation("racecar", "ecarrac") );
+    ASSERT_TRUE( is_rotation("waterbottle", "erbottlewat"));
+}
+
 
 int main( int argc, char **argv ) {
     ::testing::InitGoogleTest(&argc, argv);
