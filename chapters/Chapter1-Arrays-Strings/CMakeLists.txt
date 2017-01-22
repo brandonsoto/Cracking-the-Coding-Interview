@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.5 )
 project( Chapter1 )
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Werror -Wextra" )
-set( CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS} -g -std=c++14 -Wall -Werror -Wextra" )
+set( CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS} -ggdb3 -std=c++14 -Wall -Werror -Wextra" )
 
 enable_testing()
 

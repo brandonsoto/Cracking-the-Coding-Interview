@@ -207,11 +207,45 @@ namespace ch1 {
         for (std::size_t row = 0; row < (n / 2); ++row) {
             const std::size_t last_column = n - row - 1;
             for (std::size_t column = row; column < last_column; ++column) {
-                int* buffer = &the_matrix[row][column];
+                int *buffer = &the_matrix[row][column];
                 std::swap(*buffer, the_matrix[column][last_column]);                     // swap with right column
                 std::swap(*buffer, the_matrix[last_column][last_column + row - column]); // swap with bottom row
                 std::swap(*buffer, the_matrix[last_column + row - column][row]);         // swap with left column
             }
+        }
+    }
+
+    /**
+     * 8: Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column are
+     * set to 0.
+     */
+    void zero_matrix(matrix &matrix) {
+        if (matrix.empty()) return;
+
+        const auto total_rows = matrix.size();
+        const auto total_columns = matrix[0].size();
+
+        std::vector<std::size_t> marked_rows{};
+        std::vector<std::size_t> marked_columns{};
+
+        // mark 0'd columns and rows
+        for (std::size_t row = 0; row < total_rows; ++row) {
+            for (std::size_t column = 0; column < total_columns; ++column) {
+                if (matrix[row][column] == 0) {
+                    marked_rows.push_back( row );
+                    marked_columns.push_back( column );
+                }
+            }
+        }
+
+        for ( const auto& row : marked_rows ) {
+            for ( std::size_t i = 0; i < total_rows; ++i )
+                matrix[row][i] = 0;
+        }
+
+        for ( const auto& column : marked_columns ) {
+            for ( std::size_t i = 0; i < total_columns; ++i )
+                matrix[i][column] = 0;
         }
     }
 

@@ -129,6 +129,50 @@ TEST( Chapter1, Question7 ) {
     ASSERT_EQ( expected, matrix_5x5 );
 }
 
+TEST( Chapter1, Question8 ) {
+    matrix matrix_0x0{};
+    matrix expected{};
+    zero_matrix( matrix_0x0 );
+    ASSERT_EQ( expected, matrix_0x0 );
+
+    matrix matrix_2x2{ { 1, 2 }, { 3, 0 } };
+    expected = { { 1, 0 }, { 0, 0 } };
+    zero_matrix( matrix_2x2 );
+    ASSERT_EQ( expected, matrix_2x2 );
+
+    matrix matrix_3x4{
+            { 1, 0, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 },
+            { 0, 11, 12 } };
+
+    expected = {
+            { 0, 0, 0 },
+            { 0, 0, 6 },
+            { 0, 0, 9 },
+            { 0, 0, 0, } };
+    zero_matrix( matrix_3x4 );
+    ASSERT_EQ( expected, matrix_3x4 );
+
+    matrix matrix_4x5{
+            { 1, 2, 3, 4 },
+            { 5, 6, 7, 0 },
+            { 9, 0, 11, 12 },
+            { 13, 14, 15, 16 },
+            { 17, 18, 0, 20 } };
+
+    expected = {
+            { 1, 0, 0, 0 },
+            { 0, 0, 0, 0 },
+            { 0, 0, 0, 0 },
+            { 13, 0, 0, 0 },
+            { 0, 0, 0, 0 } };
+
+    zero_matrix( matrix_4x5 );
+    ASSERT_EQ( expected, matrix_4x5 );
+
+}
+
 int main( int argc, char **argv ) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
