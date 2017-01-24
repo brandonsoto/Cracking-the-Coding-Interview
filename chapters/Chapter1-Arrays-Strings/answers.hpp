@@ -227,13 +227,13 @@ namespace ch1 {
 
         // zero out rows
         for ( const auto& row : marked_rows ) {
-            for ( std::size_t i = 0; i < total_rows; ++i )
+            for ( std::size_t i = 0; i < total_columns; ++i )
                 matrix[row][i] = 0;
         }
 
         // zero out columns
         for ( const auto& column : marked_columns ) {
-            for ( std::size_t i = 0; i < total_columns; ++i )
+            for ( std::size_t i = 0; i < total_rows; ++i )
                 matrix[i][column] = 0;
         }
     }
