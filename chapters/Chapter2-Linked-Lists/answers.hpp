@@ -81,7 +81,7 @@ namespace ch2 {
         const auto size = get_size(root);
 
         if (k >= size || not root)
-            return shared_node(nullptr);
+            return shared_node{};
 
         shared_node curr_node{root};
 
