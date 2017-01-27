@@ -74,21 +74,28 @@ namespace ch2 {
 
     /*******************************************************************************************************************
      * 2: Return kth to last: Implement an algorithm to find the kth to last element of a singly linked list.
-     *
+     * - k = 0 returns the last element
      * - using a singly linked list
      ******************************************************************************************************************/
     shared_node get_kth_to_last(const shared_node root, const std::size_t k) {
-        const auto size = get_size(root);
+        shared_node kth_node{root};
+        shared_node runner_node{root};
 
-        if (k >= size || not root)
-            return shared_node{};
+        // place runner k elements in front
+        for (std::size_t i = 0; i <= k; ++i) {
+            if (not runner_node)
+                return shared_node{};
 
-        shared_node curr_node{root};
+            runner_node = runner_node->next;
+        }
 
-        for (std::size_t i = 0; i < (size - k - 1); ++i)
-            curr_node = curr_node->next;
+        // move the kth node to the proper location
+        while (runner_node) {
+            runner_node = runner_node->next;
+            kth_node = kth_node->next;
+        }
 
-        return curr_node;
+        return kth_node;
     }
 
 } // end of ch2 namespace
