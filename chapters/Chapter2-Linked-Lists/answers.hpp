@@ -85,7 +85,7 @@ namespace ch2 {
 
         shared_node curr_node{root};
 
-        for (std::size_t i = 0; i < k; ++i)
+        for (std::size_t i = 0; i < (size - k - 1); ++i)
             curr_node = curr_node->next;
 
         return curr_node;

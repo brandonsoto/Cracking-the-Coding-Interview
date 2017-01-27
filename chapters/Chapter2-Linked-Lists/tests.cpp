@@ -23,7 +23,7 @@ shared_node node_at(const shared_node linked_list, const std::size_t n) {
 
     shared_node curr_node{linked_list};
     for (std::size_t i = 0; i < n; ++i)
-        curr_node = curr_node;
+        curr_node = curr_node->next;
 
     return curr_node;
 }
