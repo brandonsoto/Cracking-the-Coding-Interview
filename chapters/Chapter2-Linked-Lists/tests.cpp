@@ -28,6 +28,37 @@ shared_node node_at(const shared_node linked_list, const std::size_t n) {
     return curr_node;
 }
 
+void print(const Node &root) {
+    const Node *curr = &root;
+    while (curr != nullptr) {
+        std::cout << curr->value << ", ";
+        curr = curr->next.get();
+    }
+    std::cout << std::endl << std::endl;
+}
+
+TEST(Node, Equals) {
+    // test with self
+    const shared_node node = create_linked_list({1,2,3,4,5});
+    ASSERT_EQ( *node, *node );
+
+    // test with similar node
+    const shared_node copy_node = create_linked_list({1,2,3,4,5});
+    ASSERT_EQ( *node, *copy_node );
+
+    // test with different sizes
+    const shared_node size_1_node = create_linked_list({42});
+    ASSERT_NE( *node, *size_1_node );
+
+    // test with different elements but same size
+    const shared_node same_size_node = create_linked_list({5,4,3,2,1});
+    ASSERT_NE( *node, *same_size_node);
+
+    // test with similar node that has more elements
+    const shared_node bigger_node = create_linked_list({1,2,3,4,5,6,7,});
+    ASSERT_NE( *node, *bigger_node);
+}
+
 TEST(Chapter2, Question1) {
     const auto empty_list = create_linked_list({});
     auto expected = create_linked_list({});

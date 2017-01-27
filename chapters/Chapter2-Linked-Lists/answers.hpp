@@ -15,7 +15,7 @@ namespace ch2 {
     };
 
     inline bool operator==(const Node &left, const Node &right) {
-        if (&left && &right) {
+        if (&left == &right) {
             return true;
         }
 
@@ -30,6 +30,10 @@ namespace ch2 {
         }
 
         return not curr_left && not curr_right;
+    }
+
+    inline bool operator!=( const Node& left, const Node& right ) {
+        return not( left == right );
     }
 
 
