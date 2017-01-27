@@ -1,55 +1,86 @@
-#include <iostream>
-#include <gtest/gtest.h>
 #include "answers.hpp"
+#include <gtest/gtest.h>
 
 using namespace ch2;
 
-std::shared_ptr<Node> create_linked_list(const std::initializer_list<int> &list) {
+shared_node create_linked_list(const std::initializer_list<int> &list) {
     if (list.size() == 0)
-        return std::unique_ptr<Node>(nullptr);
+        return shared_node{};
 
-    Node *root = nullptr;
+    shared_node root{};
     for (const auto &num : list) {
-        root = new Node{num, root};
+        root = std::make_shared<Node>( num, root );
     }
 
-    return std::shared_ptr<Node>(root);
+    return root;
 }
 
-void print(const Node &root) {
-    const Node *curr = &root;
-    while (curr != nullptr) {
-        std::cout << curr->value << std::endl;
-        curr = curr->next.get();
-    }
-    std::cout << std::endl << std::endl;
+shared_node node_at(const shared_node linked_list, const std::size_t n) {
+    const auto size = get_size(linked_list);
+
+    if (n >= size || not linked_list)
+        return shared_node{};
+
+    shared_node curr_node{linked_list};
+    for (std::size_t i = 0; i < n; ++i)
+        curr_node = curr_node;
+
+    return curr_node;
 }
 
 TEST(Chapter2, Question1) {
-    auto empty_list = create_linked_list({});
+    const auto empty_list = create_linked_list({});
     auto expected = create_linked_list({});
-    remove_duplicates(*empty_list.get());
+    remove_duplicates(empty_list);
     EXPECT_EQ(*expected, *empty_list);
 
-    auto size1_list = create_linked_list({1});
+    const auto size1_list = create_linked_list({1});
     expected = create_linked_list({1});
-    remove_duplicates(*size1_list.get());
+    remove_duplicates(size1_list);
     EXPECT_EQ(*expected, *size1_list);
 
-    auto all_duplicates = create_linked_list({1, 1, 1, 1, 1, 1});
+    const auto all_duplicates = create_linked_list({1, 1, 1, 1, 1, 1});
     expected = create_linked_list({1});
-    remove_duplicates(*all_duplicates.get());
+    remove_duplicates(all_duplicates);
     EXPECT_EQ(*expected, *all_duplicates);
 
-    auto no_duplicates = create_linked_list({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const auto no_duplicates = create_linked_list({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     expected = create_linked_list({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    remove_duplicates(*no_duplicates.get());
+    remove_duplicates(no_duplicates);
     EXPECT_EQ(*expected, *no_duplicates);
 
-    auto some_duplicates = create_linked_list({4, 1, 3, 4, 1, 4});
+    const auto some_duplicates = create_linked_list({4, 1, 3, 4, 1, 4});
     expected = create_linked_list({4, 1, 3});
-    remove_duplicates(*some_duplicates.get());
+    remove_duplicates(some_duplicates);
     EXPECT_EQ(*expected, *some_duplicates);
+}
+
+TEST(Chapter2, Question2) {
+    // try empty list
+    const auto empty_list = create_linked_list({});
+    auto expected = shared_node{};
+    auto result = get_kth_to_last(empty_list, 0);
+    EXPECT_EQ(*expected, *result);
+
+    const auto linked_list = create_linked_list({0, 1, 2, 3, 4, 5, 6});
+    const auto size = get_size(linked_list);
+
+    // try with k == list size
+    expected = shared_node{};
+    result = get_kth_to_last(linked_list, size);
+    EXPECT_EQ(*expected, *result);
+
+    // try with k > list size
+    expected = shared_node{};
+    result = get_kth_to_last(linked_list, size + 1);
+    EXPECT_EQ(*expected, *result);
+
+    // try with all valid k values
+    for (std::size_t k = 0; k < size; ++k) {
+        expected = node_at(linked_list, size - k - 1);
+        result = get_kth_to_last(linked_list, k);
+        EXPECT_EQ(*expected, *result);
+    }
 }
 
 int main(int argc, char **argv) {
