@@ -1,9 +1,11 @@
+#include <iostream>
+#include <string>
 #include <gtest/gtest.h>
 #include "answers.hpp"
 
 using namespace ch2;
 
-std::unique_ptr<Node> create_list(const std::initializer_list<int> &list) {
+std::shared_ptr<Node> create_list(const std::initializer_list<int> &list) {
     if (list.size() == 0)
         return std::unique_ptr<Node>(nullptr);
 
@@ -12,7 +14,7 @@ std::unique_ptr<Node> create_list(const std::initializer_list<int> &list) {
         root = new Node{num, root};
     }
 
-    return std::unique_ptr<Node>(root);
+    return std::shared_ptr<Node>(root);
 }
 
 void print(const Node &root) {

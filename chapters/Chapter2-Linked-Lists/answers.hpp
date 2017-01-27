@@ -11,7 +11,7 @@ namespace ch2 {
 
     struct Node {
         int value;
-        std::unique_ptr<Node> next;
+        std::shared_ptr<Node> next;
         Node() : Node{ 0 } { }
         Node( int val, Node* next = nullptr )
             : value{ val }, next{ next }
