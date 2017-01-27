@@ -63,7 +63,7 @@ TEST(Chapter2, Question1) {
     const auto empty_list = create_linked_list({});
     auto expected = create_linked_list({});
     remove_duplicates(empty_list);
-    ASSERT_EQ(*expected, *empty_list);
+    ASSERT_TRUE( not expected && not empty_list);
 
     const auto size1_list = create_linked_list({1});
     expected = create_linked_list({1});
@@ -91,7 +91,7 @@ TEST(Chapter2, Question2) {
     const auto empty_list = create_linked_list({});
     auto expected = shared_node{};
     auto result = get_kth_to_last(empty_list, 0);
-    ASSERT_EQ(*expected, *result);
+    ASSERT_TRUE( not expected && not result);
 
     const auto linked_list = create_linked_list({6,5,4,3,2,1});
     const auto size = get_size(linked_list);
@@ -99,12 +99,12 @@ TEST(Chapter2, Question2) {
     // try with k == list size
     expected = shared_node{};
     result = get_kth_to_last(linked_list, size);
-    ASSERT_EQ(*expected, *result);
+    ASSERT_TRUE( not expected && not result);
 
     // try with k > list size
     expected = shared_node{};
     result = get_kth_to_last(linked_list, size + 1);
-    ASSERT_EQ(*expected, *result);
+    ASSERT_TRUE(not expected && not result);
 
     // try with all valid k values
     for (std::size_t k = 0; k < size; ++k) {
