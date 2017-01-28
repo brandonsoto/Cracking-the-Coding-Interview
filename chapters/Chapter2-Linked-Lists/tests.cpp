@@ -60,13 +60,12 @@ TEST(Node, Equals) {
 }
 
 TEST(Chapter2, Question1) {
-    const auto empty_list = create_linked_list({});
-    auto expected = create_linked_list({});
-    remove_duplicates(empty_list);
-    ASSERT_TRUE( not expected && not empty_list);
+    const shared_node null_node{};
+    remove_duplicates(null_node);
+    ASSERT_FALSE( null_node);
 
     const auto size1_list = create_linked_list({1});
-    expected = create_linked_list({1});
+    auto expected = create_linked_list({1});
     remove_duplicates(size1_list);
     ASSERT_EQ(*expected, *size1_list);
 
@@ -87,32 +86,62 @@ TEST(Chapter2, Question1) {
 }
 
 TEST(Chapter2, Question2) {
-    // try empty list
-    const auto empty_list = create_linked_list({});
-    auto expected = shared_node{};
-    auto result = get_kth_to_last(empty_list, 0);
-    ASSERT_TRUE( not expected && not result);
+    // try null node
+    const shared_node null_node{};
+    auto result = get_kth_to_last(null_node, 0);
+    ASSERT_FALSE(result);
 
     const auto linked_list = create_linked_list({6,5,4,3,2,1});
     const auto size = get_size(linked_list);
 
     // try with k == list size
-    expected = shared_node{};
     result = get_kth_to_last(linked_list, size);
-    ASSERT_TRUE( not expected && not result);
+    ASSERT_FALSE(result);
 
     // try with k > list size
-    expected = shared_node{};
     result = get_kth_to_last(linked_list, size + 1);
-    ASSERT_TRUE(not expected && not result);
+    ASSERT_FALSE(result);
 
     // try with all valid k values
     for (std::size_t k = 0; k < size; ++k) {
-        expected = node_at(linked_list, size - k - 1);
+        const auto expected = node_at(linked_list, size - k - 1);
         result = get_kth_to_last(linked_list, k);
         ASSERT_EQ(*expected, *result);
     }
 }
+
+// assume list size > 2
+TEST(Chapter2, Question3) {
+    // try null node
+    auto null_node = shared_node{};
+    remove_middle(null_node);
+    ASSERT_FALSE(null_node);
+
+    // try list with 2 nodes
+    auto size_2_list = create_linked_list({2,1});
+    auto expected = create_linked_list({2});
+    remove_middle(node_at(size_2_list, 0));
+    ASSERT_EQ(*expected, *size_2_list);
+
+    // try list with 3 nodes
+    auto size_3_list = create_linked_list({3,2,1});
+    expected = create_linked_list({3, 1});
+    remove_middle(node_at(size_3_list, 1));
+    ASSERT_EQ(*expected, *size_3_list);
+
+    // try long list with odd size
+    auto odd_long_list = create_linked_list({10,9,8,7,6,5,4,3,2,1,0});
+    expected = create_linked_list({10,9,8,7,6,4,3,2,1,0});
+    remove_middle(node_at(odd_long_list, 5));
+    ASSERT_EQ(*expected, *odd_long_list);
+
+    // try long list with even size
+    auto even_long_list = create_linked_list({9,8,7,6,5,4,3,2,1,0});
+    expected = create_linked_list({9,8,7,6,5,3,2,1,0});
+    remove_middle(node_at(even_long_list, 4));
+    ASSERT_EQ(*expected, *even_long_list);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
