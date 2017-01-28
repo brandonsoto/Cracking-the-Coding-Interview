@@ -101,25 +101,11 @@ namespace ch2 {
     /**
      * 3: Delete Middle Node: Implement an algorithm to delete a node in the middle of a singly linked list,
      * given only access to that node.
-     *
-     * iterative solution
      */
-    void remove_middle( const shared_node& middle_node ) {
-        if ( not middle_node ) { return; }
-
-        shared_node curr_node = middle_node;
-        shared_node runner = middle_node->next;
-
-        while ( runner ) {
-            curr_node->value = runner->value;
-
-            // runner has found last node
-            if ( not runner->next )
-                curr_node->next = runner->next;
-
-            curr_node = runner;
-            runner = runner->next;
-        }
+    void remove_middle( shared_node middle_node ) {
+        if ( not middle_node || not middle_node->next ) { return; }
+        middle_node->value = middle_node->next->value;
+        middle_node->next = middle_node->next->next;
     }
 
 } // end of ch2 namespace
