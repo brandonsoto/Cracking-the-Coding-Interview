@@ -108,4 +108,28 @@ namespace ch2 {
         middle_node->next = middle_node->next->next;
     }
 
+    /**
+     * 4: Partition: Write code to partition a linked list around a value x, such that all nodes less than x come before
+     * all nodes greater than or equal to x. If x is contained within the list, the values of x only need to be after
+     * the values of x only need to be after the elements less than x. The partition element x can appear anywhere in
+     * the "right partition"; it does not need to appear between the left and right partitions.
+     */
+     void partition( const shared_node root, const int x ) {
+        if ( not root ) { return; }
+
+        shared_node partition_node = root;
+        shared_node curr_node = root;
+
+        while ( curr_node ) {
+            if ( curr_node->value < x ) {
+                const auto temp = curr_node->value;
+                curr_node->value = partition_node->value;
+                partition_node->value = temp;
+                partition_node = partition_node->next;
+            }
+
+            curr_node = curr_node->next;
+        }
+    }
+
 } // end of ch2 namespace
