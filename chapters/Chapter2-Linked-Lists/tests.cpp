@@ -167,6 +167,94 @@ TEST(Chapter2, Question4) {
     ASSERT_EQ(*expected, *general_list);
 }
 
+TEST(Chapter2, Question5_iterative) {
+    // try with null nodes
+    const auto null_node = shared_node{};
+    auto result = sum(null_node, null_node);
+    auto expected = create_linked_list({0});
+    ASSERT_EQ( *expected, *result);
+
+    // try with one null node
+    auto num1 = shared_node{};
+    auto num2 = create_linked_list({4,2});
+    result = sum(num1, num2);
+    expected = create_linked_list({4,2});
+    ASSERT_EQ( *expected, *result);
+
+
+    // try nums (same length) with no carry afterwords
+    num1 = create_linked_list({6,1,7});
+    num2 = create_linked_list({2,9,5});
+    result = sum(num1, num2);
+    expected = create_linked_list({9,1,2});
+    ASSERT_EQ( *expected, *result);
+
+    // try nums (same length) with carry afterwards
+    num1 = create_linked_list({9,1,2});
+    num2 = create_linked_list({2,5,9});
+    result = sum(num1, num2);
+    expected = create_linked_list({1,1,7,1});
+    ASSERT_EQ( *expected, *result);
+
+    // try nums (different length) with no carry afterwords
+    num1 = create_linked_list({1,1,2,3});
+    num2 = create_linked_list({1,1,1});
+    result = sum(num1, num2);
+    expected = create_linked_list({1,2,3,4});
+    ASSERT_EQ( *expected, *result);
+    
+    // try nums (different length) with carry afterwords
+    num1 = create_linked_list({9,1,2,3});
+    num2 = create_linked_list({9,1,1});
+    result = sum(num1, num2);
+    expected = create_linked_list({1,0,0,3,4});
+    ASSERT_EQ( *expected, *result);
+}
+
+TEST(Chapter2, Question5_recursive) {
+    // try with null nodes
+    const auto null_node = shared_node{};
+    auto result = recursive_sum(null_node, null_node);
+    auto expected = create_linked_list({0});
+    ASSERT_EQ( *expected, *result);
+
+    // try with one null node
+    auto num1 = shared_node{};
+    auto num2 = create_linked_list({4,2});
+    result = recursive_sum(num1, num2);
+    expected = create_linked_list({4,2});
+    ASSERT_EQ( *expected, *result);
+
+
+    // try nums (same length) with no carry afterwords
+    num1 = create_linked_list({6,1,7});
+    num2 = create_linked_list({2,9,5});
+    result = recursive_sum(num1, num2);
+    expected = create_linked_list({9,1,2});
+    ASSERT_EQ( *expected, *result);
+
+    // try nums (same length) with carry afterwards
+    num1 = create_linked_list({9,1,2});
+    num2 = create_linked_list({2,5,9});
+    result = recursive_sum(num1, num2);
+    expected = create_linked_list({1,1,7,1});
+    ASSERT_EQ( *expected, *result);
+
+    // try nums (different length) with no carry afterwords
+    num1 = create_linked_list({1,1,2,3});
+    num2 = create_linked_list({1,1,1});
+    result = recursive_sum(num1, num2);
+    expected = create_linked_list({1,2,3,4});
+    ASSERT_EQ( *expected, *result);
+
+    // try nums (different length) with carry afterwords
+    num1 = create_linked_list({9,1,2,3});
+    num2 = create_linked_list({9,1,1});
+    result = recursive_sum(num1, num2);
+    expected = create_linked_list({1,0,0,3,4});
+    ASSERT_EQ( *expected, *result);
+}
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

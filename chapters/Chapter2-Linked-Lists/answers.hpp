@@ -132,4 +132,110 @@ namespace ch2 {
         }
     }
 
+    void add_remaining_digits( shared_node num, shared_node result, int& carry ) {
+        int sum = 0;
+        int remainder = 0;
+
+        while ( num ) {
+            sum = num->value  + carry;
+            remainder = sum % 10;
+            carry = sum >= 10 ? 1 : 0;
+
+            result->value = remainder;
+
+            if ( num->next )
+                result->next = std::make_shared<Node>(0, nullptr);
+
+            num = num->next;
+            result = result->next;
+        }
+    }
+
+    /**
+     * 5: Sum Lists: You have two numbers represented by a linked list, where each node contains a single
+     * digit. The digits are stored in reverse order, such that the 1's digit is at the head of the linked list. Write a
+     * function that adds the two numbers and returns the sum as a linked list.
+     *
+     * Iterative solution
+     */
+    shared_node sum( shared_node num1, shared_node num2 ) {
+        shared_node result = std::make_shared<Node>(0, nullptr);
+        shared_node curr_result = result;
+        int remainder = 0;
+        int carry = 0;
+        int sum = 0;
+
+        while ( num1 && num2 ) {
+            sum = num1->value + num2->value + carry;
+            remainder = sum % 10;
+            carry = sum >= 10 ? 1 : 0;
+
+            curr_result->value = remainder;
+
+            if ( num1->next || num2->next ) {
+                curr_result->next = std::make_shared<Node>(0, nullptr);
+                curr_result = curr_result->next;
+            }
+
+            num1 = num1->next;
+            num2 = num2->next;
+        }
+
+        add_remaining_digits(num1, curr_result, carry);
+        add_remaining_digits(num2, curr_result, carry);
+
+        if ( carry > 0 )
+            curr_result->next = std::make_shared<Node>(carry, nullptr);
+
+        return result;
+    }
+
+    /**
+     * 5: Sum Lists: You have two numbers represented by a linked list, where each node contains a single
+     * digit. The digits are stored in reverse order, such that the 1's digit is at the head of the linked list. Write a
+     * function that adds the two numbers and returns the sum as a linked list.
+     *
+     * Recursive solution
+     */
+    shared_node recursive_sum( shared_node num1, shared_node num2, int carry ) {
+        const int val1 = num1 ? num1->value : 0;
+        const int val2 = num2 ? num2->value : 0;
+        const int sum = val1 + val2 + carry;
+        const int remainder = sum % 10;
+        carry = sum >= 10 ? 1 : 0;
+        shared_node result = std::make_shared<Node>( remainder, nullptr );
+
+        // case: both numbers still have digits
+        if ( num1 && num2 ) {
+            result->next = recursive_sum( num1->next, num2->next, carry );
+        }
+        // case: num1 still has digits
+        else if ( num1 ) {
+            result->next = recursive_sum( num1->next, num2, carry );
+        }
+        // case: num2 still has digits
+        else if ( num2 ) {
+            result->next = recursive_sum( num1, num2->next, carry );
+        }
+        // base case: both numbers have no more digits
+        else {
+            if ( sum > 0 ) {
+                return std::make_shared<Node>(sum, nullptr);
+            } else {
+                return shared_node{};
+            }
+        }
+
+        return result;
+    }
+
+    shared_node recursive_sum( shared_node num1, shared_node num2 ) {
+        if ( not num1 && not num2 ) {
+            return std::make_shared<Node>(0, nullptr);
+        }
+
+        return recursive_sum(num1, num2, 0);
+    }
+
+
 } // end of ch2 namespace
