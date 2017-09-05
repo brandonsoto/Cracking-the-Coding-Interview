@@ -1,11 +1,12 @@
 #include <memory>
 #include <limits>
+#include <vector>
 
 namespace ch3 {
     class Node {
     public:
         int data_;
-        int minimum_;
+        int minimum_{ std::numeric_limits<int>::max() };
         std::shared_ptr<Node> next_;
         explicit Node( int data ) : data_{ data }, next_{ nullptr } { }
 
@@ -18,7 +19,7 @@ namespace ch3 {
     class Stack {
     private:
         std::shared_ptr<Node> top_node_{};
-        int minimum_{ std::numeric_limits<int>::max() };
+        std::size_t size_{ 0 };
     public:
         explicit Stack( const int value ) {
             push( value );
@@ -30,12 +31,12 @@ namespace ch3 {
             if ( not top_node_ ) { throw std::exception(); }
             const int item = top_node_->data_;
             top_node_ = top_node_->next_;
+            --size_;
             return item;
         }
 
         void clear() {
             top_node_ = nullptr;
-            minimum_ = std::numeric_limits<int>::max();
         }
 
         Stack& push( const int item ) {
@@ -47,6 +48,7 @@ namespace ch3 {
                 next->minimum_ = next->data_;
             }
             top_node_ = next;
+            ++size_;
             return *this;
         }
 
@@ -55,9 +57,9 @@ namespace ch3 {
             return top_node_->data_;
         }
 
-        bool is_empty() const {
-            return not top_node_;
-        }
+        bool is_empty() const { return not top_node_; }
+
+        std::size_t size() const { return size_; }
 
         /*******************************************************************************************************************
          * 2: Stack Min: How would you design a stack which, in addition to push and pop, has a function min which
@@ -118,6 +120,45 @@ namespace ch3 {
         bool is_empty() const {
             return not first_;
         }
+    };
+
+    class Set_of_Stacks {
+    private:
+        std::vector<Stack> stacks_{};
+        static const std::size_t MAX_STACK_SIZE{ 5 };
+    public:
+        Set_of_Stacks() = default;
+
+        void push( const int value ) {
+            const auto index = stacks_.size() - 1;
+
+            if ( stacks_.empty() || stacks_[index].size() == MAX_STACK_SIZE ) { // stack set is empty or stack is full
+                stacks_.emplace_back( value );
+            } else {
+                stacks_[index].push( value ); // push to existing stack
+            }
+        }
+
+        int pop() {
+            return pop_at( stacks_.size() - 1 );
+        }
+
+        int pop_at( const std::size_t index ) {
+            const bool index_valid = /* index >= 0 && */ index < stacks_.size(); // >= 0 is always true because unsigned
+
+            if ( not index_valid ) {
+                throw std::exception{};
+            }
+
+            const auto value = stacks_[index].pop();
+
+            if ( stacks_[index].is_empty() ) { // no more elements in stack
+                stacks_.erase( stacks_.begin() + index );
+            }
+
+            return value;
+        }
+
     };
 
 
