@@ -158,6 +158,49 @@ namespace ch3 {
 
             return value;
         }
+    };
+
+
+    // queue made of 2 stacks
+    class Stack_Queue {
+    private:
+        Stack stack_;
+        Stack buffer_;
+        std::size_t size_{ 0 };
+
+    public:
+        Stack_Queue() = default;
+
+        Stack_Queue& push( const int value ) {
+            stack_.push( value );
+            ++size_;
+            return *this;
+        }
+
+        std::size_t size() const { return size_; }
+
+        int pop() {
+            if ( stack_.is_empty() ) {
+                throw std::exception{};
+            }
+
+            // place in buffer
+            while ( not stack_.is_empty() ) {
+                buffer_.push( stack_.pop() );
+            }
+
+            // get queue's first element
+            const auto value = buffer_.pop();
+            --size_;
+
+            // push elements back to stack
+            while ( not buffer_.is_empty() ) {
+                stack_.push( buffer_.pop() );
+            }
+
+            return value;
+
+        }
 
     };
 

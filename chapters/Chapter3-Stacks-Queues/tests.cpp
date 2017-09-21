@@ -27,6 +27,22 @@ TEST( Chapter3, Question2 ) {
     ASSERT_EQ( -10, stack.min() );
 }
 
+TEST( Chapter3, Question4 ) {
+    const std::vector<int> list{ 10, 2, 5, 7, 8 };
+
+    Stack_Queue s;
+
+    for ( const auto& i : list ) {
+       s.push( i );
+    }
+
+    ASSERT_EQ( list.size(), s.size() );
+
+    for (std::size_t i = 0; i < list.size(); ++i) {
+        ASSERT_EQ( list[i], s.pop() );
+    }
+}
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
