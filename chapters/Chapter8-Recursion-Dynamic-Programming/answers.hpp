@@ -51,6 +51,45 @@ namespace ch8 {
         return the_powerset;
     }
 
+    int multiply( const int x, const int y, const int sum ) {
+        const auto new_y = y >> 1;
+        // TODO: left off here
+
+        // base case
+        if ( y <= 0 ) {
+            return sum;
+        }
+        // we can multiply by 2
+        else if ( new_y > 0 ) {
+            int new_sum = sum;
+
+            if ( new_sum == 0 ) {
+                new_sum = x << 1;
+            } else {
+                new_sum = new_sum << 1;
+            }
+
+            return multiply( x, y >> 1, new_sum );
+        }
+        // we cannot multiply by 2
+        else {
+            return sum + x;
+        }
+    }
+
+    // question 6: write a recursive function that multiples 2 positive integers without using the * operator. We can
+    // use addition, subtraction, and bit shifting.
+    int multiply( const int x, const int y ) {
+        if ( x < 0 || y < 0 ) {
+            throw std::exception();
+        }
+        // x is larger number
+        // y is smaller number
+        const auto larger = x > y ? x : y;
+        const auto smaller = x > y ? y : x;
+        return multiply( larger, smaller, 0 );
+    }
+
 
 
 } // end of ch8 namespace
