@@ -51,29 +51,23 @@ namespace ch8 {
         return the_powerset;
     }
 
-    int multiply( const int x, const int y, const int sum ) {
-        const auto new_y = y >> 1;
-        // TODO: left off here
-
-        // base case
-        if ( y <= 0 ) {
-            return sum;
+    int multiply_helper( const int larger, const int smaller ) {
+        // base cases - 0 and 1
+        if ( smaller <= 0 ) {
+            return 0;
+        } else if ( smaller == 1 ) {
+            return larger;
         }
-        // we can multiply by 2
-        else if ( new_y > 0 ) {
-            int new_sum = sum;
 
-            if ( new_sum == 0 ) {
-                new_sum = x << 1;
-            } else {
-                new_sum = new_sum << 1;
-            }
+        const auto half_product = multiply_helper( larger, smaller >> 1 );
 
-            return multiply( x, y >> 1, new_sum );
+        // smaller is even
+        if ( smaller % 2 == 0 ) {
+            return half_product + half_product;
         }
-        // we cannot multiply by 2
+        // smaller is odd
         else {
-            return sum + x;
+            return half_product + half_product + larger;
         }
     }
 
@@ -83,11 +77,10 @@ namespace ch8 {
         if ( x < 0 || y < 0 ) {
             throw std::exception();
         }
-        // x is larger number
-        // y is smaller number
+
         const auto larger = x > y ? x : y;
         const auto smaller = x > y ? y : x;
-        return multiply( larger, smaller, 0 );
+        return multiply_helper( larger, smaller );
     }
 
 
