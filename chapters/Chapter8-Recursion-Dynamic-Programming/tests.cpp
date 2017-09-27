@@ -1,27 +1,14 @@
 #include "answers.hpp"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <vector>
+#include "prettyprint.hpp"
 
 using namespace ch8;
+using namespace ::testing;
 
-TEST(Chapter8, Question5) {
-    // empty case
-    powerset expected{};
-    ASSERT_EQ( expected, compute_powerset_recursive( {} ) );
-    ASSERT_EQ( expected, compute_powerset_iterative( {} ) );
+using charvector = std::vector<char>;
 
-    // 1 element case
-    expected = { { 1 } };
-    ASSERT_EQ( expected, compute_powerset_recursive( { 1 } ) );
-    ASSERT_EQ( expected, compute_powerset_recursive( { 1 } ) );
-
-    // 3 element case
-    expected = { { 1 }, { 1, 2 }, { 1, 2, 3 }, { 2 }, { 2, 3 }, { 3 } };
-    ASSERT_EQ( expected, compute_powerset_recursive( { 1, 2, 3 } ) );
-    ASSERT_EQ( expected, compute_powerset_iterative( { 1, 2, 3 } ) );
-}
-
-// TODO: left off here
 TEST(Chapter8, Question6) {
     // zero case
     ASSERT_EQ( 0, multiply( 0, 0 ) );
@@ -49,6 +36,21 @@ TEST(Chapter8, Question6) {
     ASSERT_EQ( 49, multiply( 7, 7 ) );
     // N x N (even)
     ASSERT_EQ( 64, multiply( 8, 8 ) );
+}
+
+TEST(Chapter8, Question7) {
+    // empty case
+    ASSERT_THAT( compute_permutation( "" ), ElementsAre( "" ) );
+
+    // size 1 case
+    ASSERT_THAT( compute_permutation( "a" ), ElementsAre( "a" ) );
+
+    // size 2 case
+    ASSERT_THAT( compute_permutation( "ab" ), UnorderedElementsAre( "ab", "ba" ) );
+
+    // size 3 case
+    ASSERT_THAT( compute_permutation( "abc" ),
+                 UnorderedElementsAre( "cab", "acb", "abc", "cba", "bca", "bac"  ) );
 }
 
 int main(int argc, char **argv) {

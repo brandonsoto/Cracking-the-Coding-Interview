@@ -1,55 +1,8 @@
 #include <memory>
 #include <vector>
+#include <iostream>
 
 namespace ch8 {
-
-    using set = std::vector<int>;
-    using powerset = std::vector<std::vector<int>>;
-
-    void compute_powerset_recursive( const set& start_set, const std::size_t start_index, powerset& the_powerset ) {
-        if ( start_index >= start_set.size() ) {
-            return;
-        }
-
-        set subset{};
-
-        for ( std::size_t i = start_index; i < start_set.size(); ++i ) {
-            subset.emplace_back( start_set[i] );
-            the_powerset.push_back( subset );
-        }
-
-        compute_powerset_recursive( start_set, start_index + 1, the_powerset );
-    }
-
-    void compute_powerset_iterative( const set& start_set, const std::size_t start_index, powerset& the_powerset ) {
-        if ( start_index >= start_set.size() ) {
-            return;
-        }
-
-        for ( std::size_t k = 0; k < start_set.size(); ++k ) {
-            set subset{};
-            for ( std::size_t i = k; i < start_set.size(); ++i ) {
-                subset.emplace_back( start_set[i] );
-                the_powerset.push_back( subset );
-            }
-        }
-    }
-
-    // question 5: return the  powerset of a set - iterative solution
-    // time = O(n^2)
-    powerset compute_powerset_iterative( const set& start_set ) {
-        powerset the_powerset{};
-        compute_powerset_iterative( start_set, 0, the_powerset );
-        return the_powerset;
-    }
-
-    // question 5: return the  powerset of a set - recursive solution
-    // time = O(n^2)
-    powerset compute_powerset_recursive( const set& start_set ) {
-        powerset the_powerset{};
-        compute_powerset_recursive( start_set, 0, the_powerset );
-        return the_powerset;
-    }
 
     int multiply_helper( const int larger, const int smaller ) {
         // base cases - 0 and 1
@@ -84,5 +37,30 @@ namespace ch8 {
     }
 
 
+    std::vector<std::string> compute_permutation( const std::string& string ) {
+        std::vector<std::string> perms{};
+
+        if ( string.empty() ) { // base case - empty string
+            perms.emplace_back("");
+            return perms;
+        }
+
+        const std::string first{ string.at( 0 ) };
+        const auto remainder = string.substr( 1 );
+
+        // recursive case - get permutations of str[1:]
+        const auto words = compute_permutation( remainder );
+
+        // add first to all positions in word
+        for ( const auto& word : words ) {
+            for ( std::size_t i = 0; i <= word.size(); ++i ) {
+                auto str = word;
+                str.insert( i, first );
+                perms.push_back( str );
+            }
+        }
+
+        return perms;
+    }
 
 } // end of ch8 namespace
